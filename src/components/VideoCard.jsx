@@ -25,9 +25,14 @@ function VideoCard({ DisplayData, setDeleteVideoResponse }) {
         setDeleteVideoResponse(result?.data)
     }
 
+    const videoDragStart = (e,videoId) => {
+        console.log(`Dragging Started with video id : ${videoId}`);
+        e.dataTransfer.setData("vId",videoId)
+    }
+
     return (
         <>
-            <Card style={{ width: '18rem', height: '28rem' }} className='text-white bg-dark mb-5'>
+            <Card draggable={true} onDragStart={e=>videoDragStart(e,DisplayData?.id)} style={{ width: '18rem', height: '28rem' }} className='text-white bg-dark mb-5'>
                 <div style={{ height: '80%', overflow: 'hidden' }}>
                     <Card.Img
                         variant="top"
@@ -44,7 +49,6 @@ function VideoCard({ DisplayData, setDeleteVideoResponse }) {
                     </div>
                 </Card.Body>
             </Card>
-
 
             <Modal size='lg' show={show} onHide={handleClose} centered>
                 <Modal.Header closeButton>

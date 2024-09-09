@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import VideoCard from './VideoCard'
 import { getAllVideosAPI } from '../services/allAPI'
-function View({ uploadVideoResponse }) {
+function View({ uploadVideoResponse, removeVideoResponseCategory }) {
     const [allVideos, setAllVideos] = useState([])
     const [deleteVideoResponse, setDeleteVideoResponse] = useState("")
 
     useEffect(() => {
         getAllVideos()
-    }, [uploadVideoResponse,deleteVideoResponse])
+    }, [uploadVideoResponse, deleteVideoResponse, removeVideoResponseCategory])
 
     //get all videos
 

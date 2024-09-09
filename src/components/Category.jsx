@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { Row, Col, Modal, FloatingLabel, Form, Button } from 'react-bootstrap'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { addCategoryAPI, getCategoryAPI, removeCategoryAPI } from '../services/allAPI';
+import { addCategoryAPI, getCategoryAPI, getSingleVideoAPI, removeCategoryAPI, removeVideoAPI, updateCategoryAPI } from '../services/allAPI';
 
-function Category() {
+function Category({ setRemoveVideoResponseCategory }) {
 
   const [categoryName, setCategoryName] = useState("")
   const [allCategory, setAllCategory] = useState([])
@@ -43,6 +43,25 @@ function Category() {
     getAllCategory()
   }
 
+  const dragOverCategory = e => {
+    e.preventDefault()
+  }
+
+  const videoDropped = async (e, categoryId) => {
+    const videoId = e.dataTransfer.getData("vId")
+    console.log(`Video id: ${videoId} dropped inside category id : ${categoryId}`);
+    //add video to category
+    const { data } = await getSingleVideoAPI(videoId)
+    console.log(data);
+    let selectedCategory = allCategory?.find(item => item.id == categoryId)
+    selectedCategory.allVideos.push(data)
+    console.log(selectedCategory);
+    //save updated category to json server using api call
+    await updateCategoryAPI(categoryId, selectedCategory)
+    const result = await removeVideoAPI(videoId)
+    setRemoveVideoResponseCategory(result)
+    getAllCategory()
+  }
   return (
     <>
       <div className='d-flex align-items-center mb-3'>
@@ -54,7 +73,7 @@ function Category() {
         {
           allCategory.length > 0 ?
             allCategory?.map(categoryDetails => (
-              <div className='card border-primary mb-3'>
+              <div droppable={true} onDragOver={e => dragOverCategory(e)} onDrop={e => videoDropped(e, categoryDetails?.id)} key={categoryDetails?.id} className='card border-primary mb-3'>
                 <div className='d-flex align-items-center justify-content-between card-header'>
                   <h5 style={{ margin: '0', lineHeight: '40px' }}>{categoryDetails?.categoryName}</h5>
                   <button onClick={() => removeCategory(categoryDetails.id)} style={{ width: '40px', height: '40px', padding: '0', fontSize: '20px', lineHeight: '40px' }} className='btn btn-dark me-3 rounded'

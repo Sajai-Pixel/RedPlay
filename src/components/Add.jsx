@@ -4,7 +4,7 @@ import { ToastContainer, Zoom, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { uploadVideoAPI } from '../services/allAPI';
 
-function Add({setUloadVideoResponse}) {
+function Add({ setUloadVideoResponse }) {
 
 
     const [invalidLink, setInvalidLink] = useState(false)
@@ -36,7 +36,7 @@ function Add({setUloadVideoResponse}) {
                 //upload success
                 handleClose() //to close modal
                 setVideoDetails({ ...videoDetails, caption: "", url: "", link: "" })
-                toast.success(`${result.data.caption} added to your collection`)
+                // toast.success(`${result.data.caption} added to your collection`)
                 setUloadVideoResponse(result)
             }
         }
@@ -106,13 +106,13 @@ function Add({setUloadVideoResponse}) {
                 autoClose={5000}
                 hideProgressBar={false}
                 newestOnTop={false}
-                closeOnClick={false}
+                closeOnClick
                 rtl={false}
-                pauseOnFocusLoss={false}
-                draggable={false}
-                pauseOnHover={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
                 theme="dark"
-                transition:Zoom
+                transition:Bounce
             />
         </>
     )
